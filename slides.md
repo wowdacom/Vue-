@@ -406,3 +406,9 @@ class: text-center
 # Learn More
 
 [Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+
+---
+
+### 反思
+
+- 為什麼我們需要在物件屬性資料內定義型別? (可判別是否進一步解析資料?)
