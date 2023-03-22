@@ -51,14 +51,12 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 ---
 
-# What is Vue.js?
+# 大綱
 
-命令式框架 VS. 聲明式框架
-
-- 📝 **命令式和聲明式** - Vue vs jQuery
-- 🧑‍💻 **性能與可維護性的權衡** - 性能 vs 心智負擔
-- 🎥 **虛擬 DOM 的性能到底如何** - 直接修改消耗 + 差異的性能消耗
-- 🤹 **運行時和編譯時** - JavaScript 物件 VS. 虛擬 DOM
+- 📝 **圖形化框架設計介紹** - 命令式和聲明式
+- 🧑‍💻 **權衡** - 性能 VS. 可維護姓 VS. 心智負擔
+- 🤹 **圖形化框架設計方式** - innerHTML VS. 虛擬 DOM
+- 🤹 **圖形化框架設計方式** - 運行時 + 編譯時
 - 🎨 **總結** - 權衡的藝術
 
 <br>
@@ -89,326 +87,170 @@ Here is another comment.
 
 ---
 
-## transition: slide-up
+# 圖形化框架設計介紹
 
-# Navigation
-
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
-
-### Keyboard Shortcuts
-
-|                                                    |                             |
-| -------------------------------------------------- | --------------------------- |
-| <kbd>right</kbd> / <kbd>space</kbd>                | next animation or slide     |
-| <kbd>left</kbd> / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd>                                      | previous slide              |
-| <kbd>down</kbd>                                    | next slide                  |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
-
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
+- 命令式和聲明式
+- 權衡：性能 VS. 可維護姓 VS. 心智負擔
+- 設計方式：操作 DOM、innerHTML、虛擬 DOM
 
 ---
 
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
+# 命令式和聲明式
 
----
+## 命令式
 
-# Code
-
-Use code snippets and get the highlighting directly![^1]
-
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  role: string;
-}
-
-function updateUser(id: number, update: User) {
-  const user = getUser(id);
-  const newUser = { ...user, ...update };
-  saveUser(id, newUser);
-}
+```ts
+$("#app")
+  .text("hello world")
+  .on("click", () => {
+    alert("ok");
+  });
 ```
-
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
-
-<style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
----
-
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
----
-
-## class: px-20
-
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="-t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
-
----
-
-## preload: false
-
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
-
-```html
-<div v-motion :initial="{ x: -80 }" :enter="{ x: 0 }">Slidev</div>
-```
-
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn More](https://sli.dev/guide/animations.html#motion)
-
-</div>
-
----
-
-# LaTeX
-
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
 
 <br>
 
-Inline $\sqrt{3x-1}+(1+x)^2$
+## 聲明式
 
-Block
-
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
+```ts
+<div @click="() => alert('ok')">Hello World</div>
+```
 
 ---
 
-# Diagrams
+# 權衡：性能 VS. 可維護姓 VS. 心智負擔
 
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
+<h1 class="text-center">結論：聲明式代碼不優於命令式代碼的性能</h1>
 
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
+---
 
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
+# 圖形化框架設計方式
 
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
+- createElement 直接運行
+- innerHTML template 的直接編譯
+- Vnode Compiler + Render 編譯 + 運行
 
-```plantuml {scale: 0.7}
-@startuml
+---
 
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
+# 虛擬 DOM VS. innerHTML 初始化
 
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
+<table>
+    <thead>
+        <tr>
+            <th style='text-align: center' colspan="3">純JS，innerHTML、虛擬 DOM 在創建時的性能</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>純JS </td>
+            <td>innerHTML 渲染 HTML 字符串</td>
+  			    <td>虛擬 DOM 創建 JS 物件 (VNode)</td>
+        </tr>
+  		<tr>
+          <td>DOM 運算</td>
+          <td>新建所有 DOM 元素</td>
+  			  <td>新建所有 DOM 元素</td>
+      </tr>
+    </tbody>
+</table>
 
-cloud {
-  [Example 1]
-}
+---
 
+# 虛擬 DOM VS. innerHTML 更新時
 
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
+<table>
+    <thead>
+        <tr>
+            <th  style='text-align: center'  colspan="3">純JS，innerHTML、虛擬 DOM 在創建時的性能</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>純JS 創建 JS Object (VNode)</td>
+            <td>innerHTML 渲染 HTML 字符串</td>
+  			    <td>虛擬 DOM 創建 JS 物件 (VNode) + Diff</td>
+        </tr>
+  		<tr>
+          <td>DOM 運算</td>
+          <td>必要的 DOM 元素</td>
+  			  <td>銷毀所有舊的 DOM 元素 新建所有新的 DOM</td>
+      </tr>
+    </tbody>
+</table>
+
+---
+
+# 圖形化框架設計方式：運行時和編譯時
+
+- 渲染器
+- 編譯器
+
+---
+
+# 渲染器
+
+```ts
+const vNode = {
+  tag: "div",
+  children: [{ tag: "span", children: "Hello! Vue Design and Implement!" }],
+};
+
+function Render(obj, root) {
+  const el = document.createElement(obj.tag);
+  if (typeof obj.children === "string") {
+    const text = document.createTextNode(obj.children);
+    el.appendChild(text);
+  } else if (obj.children) {
+    //數組，遞迴調用 Render，使用 el 作為 root 參考
+    obj.children.forEach((child) => Render(child, el));
   }
-  frame "Foo" {
-    [Frame 4]
-  }
+
+  //將元素添加到 root
+  root.appendChild(el);
 }
 
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
+const app = document.querySelector("#app");
+Render(vNode, app);
 ```
 
-</div>
+---
 
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
+# 編譯器(不純的)
+
+```html
+<div><span>Hello Vue Design and Implement</span></div>
+```
+
+👇 👇 👇 Compiler
+
+```ts
+const vNode = {
+  tag: "div",
+  children: [{ tag: "span", children: "Hello! Vue Design and Implement!" }],
+};
+```
 
 ---
 
-src: ./pages/multiple-entries.md
-hide: false
+# 編譯器(純)
+
+##### ex: servlet
+
+```html
+<div><span>Hello Vue Design and Implement</span></div>
+```
+
+👇 👇 👇 Compiler
+
+```ts
+const div = document.createElement("div");
+const span = document.createElement("span");
+span.innerText = "hello world";
+div.appendChild(span);
+document.body.appendChild(div);
+```
 
 ---
 
----
-
-layout: center
-class: text-center
-
----
-
-# Learn More
-
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
-
----
-
-### 反思
+# Q&A
 
 - 為什麼我們需要在物件屬性資料內定義型別? (可判別是否進一步解析資料?)
