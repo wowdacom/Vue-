@@ -212,7 +212,7 @@ const app = document.querySelector("#app");
 Render(vNode, app);
 ```
 
----
+https://jsfiddle.net/pukwqgcn/
 
 # 編譯器(不純的)
 
@@ -253,4 +253,4 @@ document.body.appendChild(div);
 
 # Q&A
 
-- 為什麼我們需要在物件屬性資料內定義型別? (可判別是否進一步解析資料?)
+- 再一個框架裡，什麼是運行時，什麼是編譯時，他們各有什麼特徵，他們對框架有什麼影響？
